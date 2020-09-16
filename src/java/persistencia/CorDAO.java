@@ -25,7 +25,7 @@ public class CorDAO {
             ResultSet rs = stmt.executeQuery("select * from cor");
             while (rs.next()) {                
                 Cor c = new Cor();
-                c.setIdCor(rs.getInt("idcor"));
+                c.setIdcor(rs.getInt("idcor"));
                 c.setNome(rs.getString("nome"));
                 resultado.add(c);
             }
@@ -34,7 +34,7 @@ public class CorDAO {
         }
         return resultado;
     }
-    public Cor getCorPorIdCor(int idcor){
+    public Cor getCorPorIdcor(int idcor){
         Cor c = new Cor();
         try {
             String sql = "SELECT * FROM cor WHERE idcor=?";
@@ -42,7 +42,7 @@ public class CorDAO {
             ps.setInt(1, idcor);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                c.setIdCor(idcor);
+                c.setIdcor(idcor);
                 c.setNome(rs.getString("nome"));
             }
         } catch (SQLException e) {
@@ -53,15 +53,15 @@ public class CorDAO {
     public boolean gravar (Cor c){
         try {
             String sql;
-            if (c.getIdCor() == 0) {
+            if (c.getIdcor() == 0) {
                 sql = "INSERT INTO cor (nome) VALUES (?)";
             } else {
                 sql = "UPDATE cor SET nome=? WHERE idcor=?";
             }
             PreparedStatement ps = conexao.prepareStatement(sql);
             ps.setString(1, c.getNome());
-            if (c.getIdCor() > 0) {
-                ps.setInt(2, c.getIdCor());
+            if (c.getIdcor() > 0) {
+                ps.setInt(2, c.getIdcor());
             }
             ps.execute();
             return true;

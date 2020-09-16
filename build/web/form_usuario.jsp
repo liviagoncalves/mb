@@ -37,17 +37,23 @@
                                 <label for="status">Status</label>
                                 <select name="status" class="form-control">
                                     <option selected>Selecionar...</option>
-                                    <option value="1">Ativo</option>
-                                    <option value="2">Inativo</option>
+                                    <option value="1"
+                                        <c:if test="${u.status==1}">selected=""</c:if>
+                                    >Ativo</option>
+                                    <option value="2"
+                                       <c:if test="${u.status==2}">selected=""</c:if>
+                                    >Inativo</option>
                                 </select>
                             </div>
                             <div class="form-group col-md-3">
                                 <label for="idperfil">Perfil</label>
-                                <select name="idperfil" class="form-control">
+                                <select name="idperfil" class="form-control" id="idperfil" required="">
                                     <option selected>Selecionar...</option>
-                                <jsp:useBean id="pDAO" class="persistencia.PerfilDAO"/>
-                                <c:forEach var="p" items="${pDAO.lista}">
-                                    <option value="${p.idperfil}" ${u.perfil.idperfil == perfil.idperfil ? "selected" : ""}>${p.nome}</option>
+                                    <jsp:useBean id="pDAO" class="persistencia.PerfilDAO"/>
+                                    <c:forEach var="p" items="${pDAO.lista}">
+                                    <option value="${p.idperfil}"
+                                            <c:if test="${p.idperfil==u.perfil.idperfil}">selected=""</c:if>                                  
+                                    >${p.nome}</option>
                                 </c:forEach>
                                 </select>
                             </div>

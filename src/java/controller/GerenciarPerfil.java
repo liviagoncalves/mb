@@ -37,29 +37,45 @@ public class GerenciarPerfil extends HttpServlet {
             int idperfil = Integer.parseInt(request.getParameter("idperfil"));
             PerfilDAO pDAO = new PerfilDAO();
             if(request.getParameter("acao").equals("alterar")){
-                Perfil p = pDAO.getPerfilPorIdperfil(idperfil);
-                if (p.getIdperfil() > 0) {
-                    RequestDispatcher disp = getServletContext().getRequestDispatcher("/form_perfil.jsp");
-                    request.setAttribute("p", p);
-                    disp.forward(request, response);
+                if(GerenciarLogin.verificarPermissao(request, response)){
+                    Perfil p = pDAO.getPerfilPorIdperfil(idperfil);
+                    if (p.getIdperfil() > 0) {
+                        RequestDispatcher disp = getServletContext().getRequestDispatcher("/form_perfil.jsp");
+                        request.setAttribute("p", p);
+                        disp.forward(request, response);
+                    }else{
+                        PrintWriter out = response.getWriter();
+                        out.println("<script type='text/javascript'>");
+                        out.println("alert('Perfil não encontrado!');");
+                        out.println("location.href='listar_perfil.jsp';");
+                        out.println("</script>");
+                    }
                 }else{
                     PrintWriter out = response.getWriter();
                     out.println("<script type='text/javascript'>");
-                    out.println("alert('Perfil não encontrado!');");
+                    out.println("alert('Acesso Negado!');");
                     out.println("location.href='listar_perfil.jsp';");
                     out.println("</script>");
                 }
             }
             if (request.getParameter("acao").equals("excluir")) {
-                PrintWriter out = response.getWriter();
-                if (pDAO.excluir(idperfil)) {
+                if(GerenciarLogin.verificarPermissao(request, response)){
+                    PrintWriter out = response.getWriter();
+                    if (pDAO.excluir(idperfil)) {
+                        out.println("<script type='text/javascript'>");
+                        out.println("alert('Perfil excluido com sucesso!');");
+                        out.println("location.href='listar_perfil.jsp';");
+                        out.println("</script>");
+                    } else {
+                        out.println("<script type='text/javascript'>");
+                        out.println("alert('Não foi possível excluir Perfil!');");
+                        out.println("location.href='listar_perfil.jsp';");
+                        out.println("</script>");
+                    }
+                }else{
+                    PrintWriter out = response.getWriter();
                     out.println("<script type='text/javascript'>");
-                    out.println("alert('Perfil excluido com sucesso!');");
-                    out.println("location.href='listar_perfil.jsp';");
-                    out.println("</script>");
-                } else {
-                    out.println("<script type='text/javascript'>");
-                    out.println("alert('Não foi possível excluir Perfil!');");
+                    out.println("alert('Acesso Negado!');");
                     out.println("location.href='listar_perfil.jsp';");
                     out.println("</script>");
                 }

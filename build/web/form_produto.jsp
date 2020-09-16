@@ -1,5 +1,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!DOCTYPE html>
 <html lang="pt-br">
     <head>
@@ -19,105 +20,100 @@
                     <form action="gerenciar_produto.do" method="POST">
                         <input type="hidden" name="idproduto" id="idproduto" value="${pr.idproduto}"/>
                         <div class="form-row">
-                            <div class="form-group col-md-4">
-                                <label for="nome">Nome</label>
-                                <input type="text" name="nome" class="form-control" id="nome" value="${pr.nome}" required="">
+                            <div class="form-group col-md-3">
+                                <label for="descricao">Descrição</label>
+                                <input type="text" name="descricao" class="form-control" id="descricao" value="${pr.descricao}" required="">
                             </div>
-                            <div class="form-group col-md-4">
+                            <div class="form-group col-md-3">
                                 <label for="vlr_compra">Valor Compra</label>
-                                <input type="vlr_compra" name="vlr_compra" class="form-control" id="vlr_compra" value="${pr.vlr_compra}" required="">
+                                <input type="text" name="vlr_compra" class="form-control" id="vlr_compra" value="<fmt:formatNumber pattern="#,##0.00" value="${pr.vlr_compra}"/>" required="">
                             </div>
-                            <div class="form-group col-md-4">
+                            <div class="form-group col-md-3">
                                 <label for="vlr_venda">Valor Venda</label>
-                                <input type="text" name="vlr_venda" class="form-control" id="vlr_venda" value="${pr.vlr_venda}" required="">
+                                <input type="text" name="vlr_venda" class="form-control" id="vlr_venda" value="<fmt:formatNumber pattern="#,##0.00" value="${pr.vlr_venda}"/>" required="">
+                            </div>
+                            <div class="form-group col-md-3">
+                                <label for="qtde">Quantidade</label>
+                                <input type="text" name="qtde" class="form-control" id="qtde" value="${pr.qtde}" required="">
                             </div>
                         </div>
                         <div class="form-row">
-                            <div class="form-group col-md-5">
-                                <label for="estoque">Estoque</label>
-                                <input type="text" name="estoque" class="form-control" id="estoque" value="${pr.estoque}" required="">
-                            </div>
-                            <div class="form-group col-md-3">
+                            <div class="form-group col-md-4">
                                 <label for="idfornecedor">Fornecedor</label>
-                                <select name="idfornecedor" class="form-control">
-                                    <option selected>Selecionar...</option>
-                                <jsp:useBean class="persistencia.FornecedorDAO" id="fDAO"/>
-                                <c:forEach var="f" items="${fDAO.lista}">
-                                    <option value="${f.idfornecedor}">${p.nome}</option>
-                                </c:forEach>
+                                <select name="idfornecedor" class="form-control" id="idfornecedor" required="">
+                                    <option selected="">Selecionar</option>
+                                    <jsp:useBean id="fDAO" class="persistencia.FornecedorDAO"/>
+                                    <c:forEach var="f" items="${fDAO.lista}">
+                                        <option value="${f.idfornecedor}" 
+                                                <c:if test="${f.idfornecedor==pr.fornecedor.idfornecedor}">selected=""</c:if>
+                                        >${f.razao_social}</option>
+                                    </c:forEach>
                                 </select>
+                                <small id="linkcadastrar" class="form-text text-muted">
+                                    <a class="link" href="listar_fornecedor.jsp">Cadastrar Fornecedor</a>
+                                </small>
                             </div>
-                            <div class="form-group col-md-3">
-                                <label for="data_nasc">Data de Nascimento</label>
-                                <input type="date" name="data_nasc" class="form-control" id="data_nasc" value="${cli.data_nasc}" required="">
+                            <div class="form-group col-md-4">
+                                <label for="idcategoria">Categoria</label>
+                                <select name="idcategoria" class="form-control" id="idcategoria" required="">
+                                    <option selected="">Selecionar</option>
+                                    <jsp:useBean id="cDAO" class="persistencia.CategoriaDAO"/>
+                                    <c:forEach var="c" items="${cDAO.lista}">
+                                        <option value="${c.idcategoria}"
+                                                <c:if test="${c.idcategoria==pr.categoria.idcategoria}">selected=""</c:if>
+                                        >${c.nome}</option>
+                                    </c:forEach>
+                                </select>
+                                <small id="linkcadastrar" class="form-text text-muted">
+                                    <a class="link" href="listar_categoria.jsp">Cadastrar Categoria</a>
+                                </small>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label for="idcor">Cor</label>
+                                <select name="idcor" class="form-control" id="idcor">
+                                    <option selected="">Selecionar</option>
+                                    <jsp:useBean id="corDAO" class="persistencia.CorDAO"/>
+                                    <c:forEach var="cor" items="${corDAO.lista}">
+                                        <option value="${cor.idcor}"
+                                                <c:if test="${cor.idcor==pr.cor.idcor}">selected=""</c:if>
+                                        >${cor.nome}</option>
+                                    </c:forEach>
+                                </select>
+                                <small id="linkcadastrar" class="form-text text-muted">
+                                    <a class="link" href="listar_cor.jsp">Cadastrar Cor</a>
+                                </small>
                             </div>
                         </div>
                         <div class="form-row">
                             <div class="form-group col-md-4">
-                                <label for="Sexo">Gênero</label>
-                                <select id="sexo" class="form-control">
-                                    <option selected>Selecionar...</option>
-                                    <option value="Feminino">Feminino</option>
-                                    <option value="Masculino">Masculino</option>
+                                <label for="idtamanho">Tamanho</label>
+                                <select name="idtamanho" class="form-control" id="idtamanho">
+                                    <option selected="">Selecionar</option>
+                                    <jsp:useBean id="tDAO" class="persistencia.TamanhoDAO"/>
+                                    <c:forEach var="t" items="${tDAO.lista}">
+                                        <option value="${t.idtamanho}" 
+                                                <c:if test="${t.idtamanho==pr.tamanho.idtamanho}">selected=""</c:if>
+                                        >${t.nome}</option>
+                                    </c:forEach>
                                 </select>
+                                <small id="linkcadastrar" class="form-text text-muted">
+                                    <a class="link" href="listar_tamanho.jsp">Cadastrar Tamanho</a>
+                                </small>
                             </div>
                             <div class="form-group col-md-4">
-                                <label for="Sexo">Fidelidade</label>
-                                <select id="sexo" class="form-control">
-                                    <option selected>Selecionar...</option>
-                                    <option value="Sim">Sim</option>
-                                    <option value="Não">Não</option>
+                                <label for="marca">Marca</label>
+                                <select name="idmarca" class="form-control" id="idmarca">
+                                    <option selected="">Selecionar</option>
+                                    <jsp:useBean id="mDAO" class="persistencia.MarcaDAO"/>
+                                    <c:forEach var="m" items="${mDAO.lista}">
+                                        <option value="${m.idmarca}"
+                                                <c:if test="${m.idmarca==pr.marca.idmarca}">selected=""</c:if>
+                                        >${m.nome}</option>
+                                    </c:forEach>
                                 </select>
-                            </div>
-                            <div class="form-group col-md-4">
-                                <label for="Sexo">Promoção</label>
-                                <select id="sexo" class="form-control">
-                                    <option selected>Selecionar...</option>
-                                    <option value="Sim">Sim</option>
-                                    <option value="Não">Não</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group col-md-6">
-                                <label for="telefone">Telefone</label>
-                                <input type="text" name="telefone" class="form-control" id="telefone" value="${cli.telefone}" required="">
-                            </div>
-                            <div class="form-group col-md-6">
-                                <label for="produto_desde">Cliente Desde</label>
-                                <input type="date" name="cliente_desde" class="form-control" id="cliente_desde" value="${cli.cliente_desde}" required="">
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group col-md-2">
-                                <label for="cep">CEP</label>
-                                <input type="text" name="cep" class="form-control" id="cep" value="${cli.cep}" required="">
-                            </div>
-                            <div class="form-group col-md-9">
-                                <label for="rg">Endereço</label>
-                                <input type="text" name="endereco" class="form-control" id="endereco" value="${cli.endereco}" required="">
-                            </div>
-                            <div class="form-group col-md-1">
-                                <label for="numero">Número</label>
-                                <input type="text" name="numero" class="form-control" id="numero" value="${cli.numero}" required="">
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group col-md-3">
-                                <label for="complemento">Complemento</label>
-                                <input type="text" name="complemento" class="form-control" id="complemento" value="${cli.complemento}" required="">
-                            </div>
-                            <div class="form-group col-md-3">
-                                <label for="bairro">Bairro</label>
-                                <input type="text" name="bairro" class="form-control" id="bairro" value="${cli.bairro}" required="">
-                            </div>
-                            <div class="form-group col-md-3">
-                                <label for="cidade">Cidade</label>
-                                <input type="text" name="cidade" class="form-control" id="cidade" value="${cli.cidade}" required="">
-                            </div>
-                            <div class="form-group col-md-3">
-                                <label for="uf">UF</label>
-                                <input type="text" name="uf" class="form-control" id="uf" value="${cli.uf}" required="">
+                                <small id="linkcadastrar" class="form-text text-muted">
+                                    <a class="link" href="listar_marca.jsp">Cadastrar Marca</a>
+                                </small>
                             </div>
                         </div>
                         <button class="btn btn-info">Gravar</button>
@@ -132,5 +128,14 @@
         <script src="bootstrap/js/bootstrap.min.js"></script>
         <script src="https://unpkg.com/ionicons@5.0.0/dist/ionicons.js"></script>
         <script src="https://unpkg.com/scrollreveal"></script>
+        <script type="text/javascript" src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.5.0.min.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.2/jquery.validate.min.js"></script>
+        <script type="text/javascript" src="datatables/jquery.mask.js"></script>
+        <script type="text/javascript">
+            /*$(document).ready(function(){
+               var $seuCampoDinheiro = $("#vlr_venda");
+               $seuCampoDinheiro.mask('000.000.000.000.000,00', {reverse: true});
+            });*/
+        </script>
     </body>
 </html>

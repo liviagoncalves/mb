@@ -16,3 +16,6 @@ nav ul li a:hover{
 header{
     margin-bottom: 56px !important;
 }
+.pull-right{
+    color: rgb(10,186,181) !important;
+}

@@ -2,6 +2,8 @@ package controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -33,31 +35,47 @@ public class GerenciarCliente extends HttpServlet {
             int idcliente = Integer.parseInt(request.getParameter("idcliente"));
             ClienteDAO cDAO = new ClienteDAO();
             if (request.getParameter("acao").equals("alterar")) {
-                Cliente c = cDAO.getClientePorIdCliente(idcliente);
-                if (c.getIdCliente() > 0) {
-                    RequestDispatcher disp = getServletContext().getRequestDispatcher("/form_cliente.jsp");
-                    request.setAttribute("cli", c);
-                    disp.forward(request, response);
-                } else {
+                if(GerenciarLogin.verificarPermissao(request, response)){
+                    Cliente c = cDAO.getClientePorIdcliente(idcliente);
+                    if (c.getIdcliente() > 0) {
+                        RequestDispatcher disp = getServletContext().getRequestDispatcher("/form_cliente.jsp");
+                        request.setAttribute("cli", c);
+                        disp.forward(request, response);
+                    } else {
+                        PrintWriter out = response.getWriter();
+                        out.println("<script type='text/javascript'>");
+                        out.println("alert('Cliente não encontrado!');");
+                        out.println("location.href='listar_cliente.jsp';");
+                        out.println("</script>");
+                    }
+                }else{
                     PrintWriter out = response.getWriter();
-                    out.println("<script type='text/javascript'>");
-                    out.println("alert('Cliente não encontrado!');");
-                    out.println("location.href='listar_cliente.jsp';");
-                    out.println("</script>");
+                        out.println("<script type='text/javascript'>");
+                        out.println("alert('Acesso Negado!');");
+                        out.println("location.href='listar_cliente.jsp';");
+                        out.println("</script>");
                 }
             }
             if (request.getParameter("acao").equals("excluir")) {
-                PrintWriter out = response.getWriter();
-                if (cDAO.excluir(idcliente)) {
-                    out.println("<script type='text/javascript'>");
-                    out.println("alert('Cliente excluido com sucesso!');");
-                    out.println("location.href='listar_cliente.jsp';");
-                    out.println("</script>");
-                } else {
-                    out.println("<script type='text/javascript'>");
-                    out.println("alert('Não foi possível excluir Cliente!');");
-                    out.println("location.href='listar_cliente.jsp';");
-                    out.println("</script>");
+                if(GerenciarLogin.verificarPermissao(request, response)){
+                    PrintWriter out = response.getWriter();
+                    if (cDAO.excluir(idcliente)) {
+                        out.println("<script type='text/javascript'>");
+                        out.println("alert('Cliente excluido com sucesso!');");
+                        out.println("location.href='listar_cliente.jsp';");
+                        out.println("</script>");
+                    } else {
+                        out.println("<script type='text/javascript'>");
+                        out.println("alert('Não foi possível excluir Cliente!');");
+                        out.println("location.href='listar_cliente.jsp';");
+                        out.println("</script>");
+                    }
+                }else{
+                    PrintWriter out = response.getWriter();
+                        out.println("<script type='text/javascript'>");
+                        out.println("alert('Acesso Negado!');");
+                        out.println("location.href='listar_cliente.jsp';");
+                        out.println("</script>");
                 }
             }
         } catch (Exception e) {
@@ -77,29 +95,52 @@ public class GerenciarCliente extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
+        String idcliente = request.getParameter("idcliente");
+        String nome = request.getParameter("nome");
+        String email = request.getParameter("email");
+        String cpf = request.getParameter("cpf");
+        String rg = request.getParameter("rg");
+        String data_nasc = request.getParameter("data_nasc");
+        String sexo = request.getParameter("sexo");
+        String telefone = request.getParameter("telefone");
+        String cep = request.getParameter("cep");
+        String endereco = request.getParameter("endereco");
+        String numero = request.getParameter("numero");
+        String complemento = request.getParameter("complemento");
+        String bairro = request.getParameter("bairro");
+        String cidade = request.getParameter("cidade");
+        String uf = request.getParameter("uf");
+        String cliente_desde = request.getParameter("cliente_desde");
+        String fidelidade = request.getParameter("fidelidade");
+        String promocao = request.getParameter("promocao");
         String mensagem;
         try {
+            SimpleDateFormat data = new SimpleDateFormat("dd/MM/yyyy");
             Cliente c = new Cliente();
-            if (!request.getParameter("idcliente").isEmpty()) {
-                c.setIdCliente(Integer.parseInt(request.getParameter("idcliente")));
+            if (!idcliente.isEmpty()) {
+                c.setIdcliente(Integer.parseInt(request.getParameter("idcliente")));
             }
-            c.setNome(request.getParameter("nome"));
-            c.setEmail(request.getParameter("email"));
-            c.setCpf(request.getParameter("cpf"));
-            c.setRg(request.getParameter("rg"));
-            c.setData_nasc(request.getParameter("data_nasc"));
-            c.setSexo(request.getParameter("sexo"));
-            c.setTelefone(request.getParameter("telefone"));
-            c.setCep(request.getParameter("cep"));
-            c.setEndereco(request.getParameter("endereco"));
-            c.setNumero(Integer.parseInt(request.getParameter("numero")));
-            c.setComplemento(request.getParameter("complemento"));
-            c.setBairro(request.getParameter("bairro"));
-            c.setCidade(request.getParameter("cidade"));
-            c.setUf(request.getParameter("uf"));
-            c.setCliente_desde(request.getParameter("cliente_desde"));
-            c.setFidelidade(request.getParameter("fidelidade"));
-            c.setPromocao(request.getParameter("promocao"));
+            c.setNome(nome);
+            c.setEmail(email);
+            c.setCpf(cpf);
+            c.setRg(rg);
+            if(!data_nasc.isEmpty()){
+                c.setData_nasc(data.parse(data_nasc));
+            }
+            c.setSexo(sexo);
+            c.setTelefone(telefone);
+            c.setCep(cep);
+            c.setEndereco(endereco);
+            c.setNumero(Integer.parseInt(numero));
+            c.setComplemento(complemento);
+            c.setBairro(bairro);
+            c.setCidade(cidade);
+            c.setUf(uf);
+            if(!cliente_desde.isEmpty()){
+                c.setCliente_desde(data.parse(cliente_desde));
+            }
+            c.setFidelidade(fidelidade);
+            c.setPromocao(promocao);
             ClienteDAO cDAO = new ClienteDAO();
             if (cDAO.gravar(c)) {
                 mensagem = "Cliente gravado com sucesso!";

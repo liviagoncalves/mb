@@ -1,10 +1,10 @@
 package model;
 public class Produto {
     private int idproduto;
-    private String nome;
+    private String descricao;
     private double vlr_compra;
     private double vlr_venda;
-    private int estoque;
+    private int qtde;
     private Fornecedor fornecedor;
     private Categoria categoria;
     private Cor cor;
@@ -14,12 +14,12 @@ public class Produto {
     public Produto() {
     }
 
-    public Produto(int idproduto, String nome, double vlr_compra, double vlr_venda, int estoque, Fornecedor fornecedor, Categoria categoria, Cor cor, Tamanho tamanho, Marca marca) {
+    public Produto(int idproduto, String descricao, double vlr_compra, double vlr_venda, int estoque, Fornecedor fornecedor, Categoria categoria, Cor cor, Tamanho tamanho, Marca marca) {
         this.idproduto = idproduto;
-        this.nome = nome;
+        this.descricao = descricao;
         this.vlr_compra = vlr_compra;
         this.vlr_venda = vlr_venda;
-        this.estoque = estoque;
+        this.qtde = qtde;
         this.fornecedor = fornecedor;
         this.categoria = categoria;
         this.cor = cor;
@@ -35,12 +35,12 @@ public class Produto {
         this.idproduto = idproduto;
     }
 
-    public String getNome() {
-        return nome;
+    public String getDescricao() {
+        return descricao;
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
     }
 
     public double getVlr_compra() {
@@ -59,12 +59,12 @@ public class Produto {
         this.vlr_venda = vlr_venda;
     }
 
-    public int getEstoque() {
-        return estoque;
+    public int getQtde() {
+        return qtde;
     }
 
-    public void setEstoque(int estoque) {
-        this.estoque = estoque;
+    public void setQtde(int qtde) {
+        this.qtde = qtde;
     }
 
     public Fornecedor getFornecedor() {
@@ -106,5 +106,14 @@ public class Produto {
     public void setMarca(Marca marca) {
         this.marca = marca;
     }
+
+    @Override
+    public String toString() {
+        return "Produto{" + "descricao=" + descricao + '}';
+    }
     
 }
+    
+
+
+    

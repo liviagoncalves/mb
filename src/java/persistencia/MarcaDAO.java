@@ -25,7 +25,7 @@ public class MarcaDAO {
             ResultSet rs = stmt.executeQuery("select * from marca");
             while (rs.next()) {                
                 Marca m = new Marca();
-                m.setIdMarca(rs.getInt("idmarca"));  
+                m.setIdmarca(rs.getInt("idmarca"));  
                 m.setNome(rs.getString("nome"));
                 resultado.add(m);
             }
@@ -34,7 +34,7 @@ public class MarcaDAO {
         }
         return resultado;
     }
-    public Marca getMarcaPorIdMarca(int idmarca){
+    public Marca getMarcaPorIdmarca(int idmarca){
         Marca m = new Marca();
         try {
             String sql = "SELECT * FROM marca WHERE idmarca=?";
@@ -42,7 +42,7 @@ public class MarcaDAO {
             ps.setInt(1, idmarca);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                m.setIdMarca(idmarca);
+                m.setIdmarca(idmarca);
                 m.setNome(rs.getString("nome"));
             }
         } catch (Exception e) {
@@ -53,15 +53,15 @@ public class MarcaDAO {
     public boolean gravar (Marca m){
         try {
             String sql;
-            if (m.getIdMarca() == 0) {
+            if (m.getIdmarca() == 0) {
                 sql = "INSERT INTO marca (nome) VALUES (?)";
             } else {
                 sql = "UPDATE marca SET nome=? WHERE idmarca=?";
             }
             PreparedStatement ps = conexao.prepareStatement(sql);
             ps.setString(1, m.getNome());
-            if (m.getIdMarca() > 0) {
-                ps.setInt(2, m.getIdMarca());
+            if (m.getIdmarca() > 0) {
+                ps.setInt(2, m.getIdmarca());
             }
             ps.execute();
             return true;

@@ -16,7 +16,7 @@
                 <div class="container-fluid">
                     <h1 class="display-5 text-center">Cadastrar Categoria</h1>
                     <form action="gerenciar_categoria.do" method="POST">
-                    <input type="hidden" name="idcategoria" id="idcategoria" value="${ct.idCategoria}"/>
+                    <input type="hidden" name="idcategoria" id="idcategoria" value="${ct.idcategoria}"/>
                     <div class="row">
                         <div class="form-group col-sm-8">
                             <label for="nome" class="control-label">Nome</label>

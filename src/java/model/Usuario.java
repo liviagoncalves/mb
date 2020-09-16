@@ -1,5 +1,6 @@
 package model;
-public class Usuario {
+
+public class Usuario{
     private int idusuario;
     private String nome;
     private String login;
@@ -18,8 +19,7 @@ public class Usuario {
         this.status = status;
         this.perfil = perfil;
     }
-    
-    
+
     public int getIdusuario() {
         return idusuario;
     }
@@ -67,6 +67,10 @@ public class Usuario {
     public void setPerfil(Perfil perfil) {
         this.perfil = perfil;
     }
-
-   
+    
+    @Override
+    public String toString() {
+        return "Usuario{" + "nome=" + nome + '}';
+    }
+    
 }

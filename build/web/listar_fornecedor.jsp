@@ -49,11 +49,9 @@
                                         <a href="./gerenciar_fornecedor.do?acao=alterar&idfornecedor=${f.idfornecedor}" class="btn btn-info">
                                             <ion-icon name="pencil-sharp"></ion-icon>
                                         </a>
-                                        <a href="javascript:confirmarExclusao(${f.idfornecedor});">
-                                            <button class="btn btn-danger">
-                                                <ion-icon name="trash-sharp"></ion-icon>
-                                            </button>
-                                        </a>
+                                        <button class="btn btn-danger" onclick="confirmarExclusao(${f.idfornecedor},'${f.razao_social}')">
+                                            <ion-icon name="trash-sharp"></ion-icon>
+                                        </button>
                                     </td>
                                 </tr>
                             </c:forEach>
@@ -66,6 +64,7 @@
         <script type="text/javascript" src="datatables/jquery.dataTables.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
         <script src="https://unpkg.com/ionicons@5.0.0/dist/ionicons.js"></script>
+        <script src="bootstrap/js/bootstrap.min.js"></script>
         <script src="https://unpkg.com/scrollreveal"></script>
         <script type="text/javascript">
             $(document).ready(function(){
@@ -92,8 +91,8 @@
             })
         </script>
         <script>
-            function confirmarExclusao(idfornecedor){
-                if (confirm('Deseja realmente excluir este Fornecedor?')) {
+            function confirmarExclusao(idfornecedor, razao_social){
+                if (confirm('Deseja realmente excluir este Fornecedor ' +razao_social+'?')) {
                     location.href="./gerenciar_fornecedor.do?acao=excluir&idfornecedor="+idfornecedor;
                 }
             }

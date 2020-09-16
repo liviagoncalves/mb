@@ -14,9 +14,9 @@
             <%@include file="banner.jsp"%>
             <div class="jumbotron jumbotron-fluid formulario">
                 <div class="container-fluid">
-                    <h1 class="display-5 text-center">Cadastrar Perfil</h1>
+                    <h1 class="display-5 text-center">Cadastrar cor</h1>
                     <form action="gerenciar_cor.do" method="POST">
-                        <input type="hidden" name="idcor" id="idcor" value="${cor.idCor}"/>
+                        <input type="hidden" name="idcor" id="idcor" value="${cor.idcor}"/>
                         <div class="row">
                             <div class="form-group col-sm-8">
                             <label for="nome" class="control-label">Nome</label>

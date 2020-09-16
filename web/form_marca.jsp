@@ -16,7 +16,7 @@
                 <div class="container-fluid">
                     <h1 class="display-5 text-center">Cadastrar Marca</h1>
                     <form action="gerenciar_marca.do" method="POST">
-                        <input type="hidden" name="idmarca" id="idmarca" value="${m.idMarca}"/>
+                        <input type="hidden" name="idmarca" id="idmarca" value="${m.idmarca}"/>
                         <div class="row">
                             <div class="form-group col-sm-8">
                                 <label for="nome" class="control-label">Nome</label>

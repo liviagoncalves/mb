@@ -33,32 +33,48 @@ public class GerenciarCategoria extends HttpServlet {
             int idcategoria = Integer.parseInt(request.getParameter("idcategoria"));
             CategoriaDAO ctDAO = new CategoriaDAO();
             if (request.getParameter("acao").equals("alterar")) {
-                Categoria ct = ctDAO.getCategoriaPorIdCategoria(idcategoria);
-                if (ct.getIdCategoria() > 0) {
-                    RequestDispatcher disp = getServletContext().getRequestDispatcher("/form_categoria.jsp");
-                    request.setAttribute("ct", ct);
-                    disp.forward(request, response);
-                } else {
+                if(GerenciarLogin.verificarPermissao(request, response)){
+                    Categoria ct = ctDAO.getCategoriaPorIdcategoria(idcategoria);
+                    if (ct.getIdcategoria() > 0) {
+                        RequestDispatcher disp = getServletContext().getRequestDispatcher("/form_categoria.jsp");
+                        request.setAttribute("ct", ct);
+                        disp.forward(request, response);
+                    } else {
+                        PrintWriter out = response.getWriter();
+                        out.println("<script type='text/javascript'>");
+                        out.println("alert('Categoria não encontrado!');");
+                        out.println("location.href='listar_categoria.jsp';");
+                        out.println("</script>");
+                    }
+                }else{
                     PrintWriter out = response.getWriter();
                     out.println("<script type='text/javascript'>");
-                    out.println("alert('Categoria não encontrado!');");
+                    out.println("alert('Acesso Negado!');");
                     out.println("location.href='listar_categoria.jsp';");
                     out.println("</script>");
                 }
             }
              if (request.getParameter("acao").equals("excluir")){
-                 PrintWriter out = response.getWriter();
-                 if (ctDAO.excluir(idcategoria)) {
+                if(GerenciarLogin.verificarPermissao(request, response)){
+                    PrintWriter out = response.getWriter();
+                    if (ctDAO.excluir(idcategoria)) {
+                        out.println("<script type='text/javascript'>");
+                        out.println("alert('Categoria excluido com sucesso!');");
+                        out.println("location.href='listar_categoria.jsp';");
+                        out.println("</script>");
+                    } else {
+                        out.println("<script type='text/javascript'>");
+                        out.println("alert('Não foi possível excluir Categoria!');");
+                        out.println("location.href='listar_categoria.jsp';");
+                        out.println("</script>");
+                    }
+                }else{
+                    PrintWriter out = response.getWriter();
                     out.println("<script type='text/javascript'>");
-                    out.println("alert('Categoria excluido com sucesso!');");
+                    out.println("alert('Acesso Negado!');");
                     out.println("location.href='listar_categoria.jsp';");
                     out.println("</script>");
-                 } else {
-                    out.println("<script type='text/javascript'>");
-                    out.println("alert('Não foi possível excluir Categoria!');");
-                    out.println("location.href='listar_categoria.jsp';");
-                    out.println("</script>");
-                 }
+                }
              }
         } catch (Exception e) {
             System.out.println("Erro ao recuperar dados!");
@@ -76,11 +92,12 @@ public class GerenciarCategoria extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        request.setCharacterEncoding("UTF-8");
         String mensagem;
         try {
             Categoria ct = new Categoria();
             if (!request.getParameter("idcategoria").isEmpty()) {
-                ct.setIdCategoria(Integer.parseInt(request.getParameter("idcategoria")));
+                ct.setIdcategoria(Integer.parseInt(request.getParameter("idcategoria")));
             }
             ct.setNome(request.getParameter("nome"));
             CategoriaDAO ctDAO = new CategoriaDAO();

@@ -1,6 +1,7 @@
 package persistencia;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -25,12 +26,12 @@ public class ClienteDAO {
             ResultSet rs = stmt.executeQuery("select * from cliente");
             while(rs.next()){
                 Cliente c = new Cliente();
-                c.setIdCliente(rs.getInt("idcliente"));
+                c.setIdcliente(rs.getInt("idcliente"));
                 c.setNome(rs.getString("nome"));
                 c.setEmail(rs.getString("email"));
                 c.setCpf(rs.getString("cpf"));
                 c.setRg(rs.getString("rg"));
-                c.setData_nasc(rs.getString("data_nasc"));
+                c.setData_nasc(rs.getDate("data_nasc"));
                 c.setSexo(rs.getString("sexo"));
                 c.setTelefone(rs.getString("telefone"));
                 c.setCep(rs.getString("cep"));
@@ -40,7 +41,7 @@ public class ClienteDAO {
                 c.setBairro(rs.getString("bairro"));
                 c.setCidade(rs.getString("cidade"));
                 c.setUf(rs.getString("uf"));
-                c.setCliente_desde(rs.getString("cliente_desde"));
+                c.setCliente_desde(rs.getDate("cliente_desde"));
                 c.setFidelidade(rs.getString("fidelidade"));
                 c.setPromocao(rs.getString("promocao"));
                 resultado.add(c);
@@ -50,7 +51,7 @@ public class ClienteDAO {
         }
         return resultado;
     }
-    public Cliente getClientePorIdCliente (int idcliente){
+    public Cliente getClientePorIdcliente (int idcliente){
         Cliente c = new Cliente();
         try {
             String sql = "SELECT * FROM cliente WHERE idcliente=?";
@@ -58,12 +59,12 @@ public class ClienteDAO {
             ps.setInt(1, idcliente);
             ResultSet rs = ps.executeQuery();
             if(rs.next()){
-                c.setIdCliente(idcliente);
+                c.setIdcliente(idcliente);
                 c.setNome(rs.getString("nome"));
                 c.setEmail(rs.getString("email"));
                 c.setCpf(rs.getString("cpf"));
                 c.setRg(rs.getString("rg"));
-                c.setData_nasc(rs.getString("data_nasc"));
+                c.setData_nasc(rs.getDate("data_nasc"));
                 c.setSexo(rs.getString("sexo"));
                 c.setTelefone(rs.getString("telefone"));
                 c.setCep(rs.getString("cep"));
@@ -73,7 +74,7 @@ public class ClienteDAO {
                 c.setBairro(rs.getString("bairro"));
                 c.setCidade(rs.getString("cidade"));
                 c.setUf(rs.getString("uf"));
-                c.setCliente_desde(rs.getString("cliente_desde"));
+                c.setCliente_desde(rs.getDate("cliente_desde"));
                 c.setFidelidade(rs.getString("fidelidade"));
                 c.setPromocao(rs.getString("promocao"));
             }
@@ -85,7 +86,7 @@ public class ClienteDAO {
     public boolean gravar(Cliente c){
         try {
             String sql;
-            if (c.getIdCliente() == 0) {
+            if (c.getIdcliente() == 0) {
                 sql = "INSERT INTO cliente (nome, email, cpf, rg, data_nasc, "
                         + "sexo, telefone, cep, endereco, numero, "
                         + "complemento, bairro, cidade, uf, cliente_desde, "
@@ -93,18 +94,31 @@ public class ClienteDAO {
                         + "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
             } else {
                 sql = "UPDATE cliente SET "
-                        + "nome=? , email=?, cpf=?, rg=?, data_nasc=?, "
-                        + "sexo=?, telefone=?, cep=?, endereco=?, numero=?, "
-                        + "complemento=?, bairro=?, cidade=?, uf=?, "
-                        + "cliente_desde=?, fidelidade=?, promocao=? "
-                        + "WHERE idCliente=?";
+                        + "nome=?, "
+                        + "email=?, "
+                        + "cpf=?, "
+                        + "rg=?, "
+                        + "data_nasc=?, "
+                        + "sexo=?, "
+                        + "telefone=?, "
+                        + "cep=?, "
+                        + "endereco=?, "
+                        + "numero=?, "
+                        + "complemento=?, "
+                        + "bairro=?, "
+                        + "cidade=?, "
+                        + "uf=?, "
+                        + "cliente_desde=?, "
+                        + "fidelidade=?, "
+                        + "promocao=? "
+                        + "WHERE idcliente=?";
             }
             PreparedStatement ps = conexao.prepareStatement(sql);
             ps.setString(1, c.getNome());
             ps.setString(2, c.getEmail());
             ps.setString(3, c.getCpf());
             ps.setString(4, c.getRg());
-            ps.setString(5, c.getData_nasc());
+            ps.setDate(5, new Date(c.getData_nasc().getTime()));
             ps.setString(6, c.getSexo());
             ps.setString(7, c.getTelefone());
             ps.setString(8, c.getCep());
@@ -114,11 +128,11 @@ public class ClienteDAO {
             ps.setString(12, c.getBairro());
             ps.setString(13, c.getCidade());
             ps.setString(14, c.getUf());
-            ps.setString(15, c.getCliente_desde());
+            ps.setDate(15, new Date(c.getCliente_desde().getTime()));
             ps.setString(16, c.getFidelidade());
             ps.setString(17, c.getPromocao());
-            if (c.getIdCliente() > 0) {
-                ps.setInt(18, c.getIdCliente());
+            if (c.getIdcliente() > 0) {
+                ps.setInt(18, c.getIdcliente());
             }
             ps.execute();
             return true;
@@ -129,7 +143,7 @@ public class ClienteDAO {
     }
     public boolean excluir (int idcliente){
         try {
-            String sql = "DELETE FROM cliente WHERE idcliente = ?";
+            String sql = "DELETE FROM cliente WHERE idcliente=?";
             PreparedStatement ps = conexao.prepareStatement(sql);
             ps.setInt(1, idcliente);
             ps.execute();

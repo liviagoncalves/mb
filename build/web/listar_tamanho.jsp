@@ -37,17 +37,15 @@
                         <tbody>
                             <c:forEach var="t" items="${tDAO.lista}">
                                 <tr>
-                                    <td>${t.idTamanho}</td>
+                                    <td>${t.idtamanho}</td>
                                     <td>${t.nome}</td>
                                     <td>
-                                        <a href="./gerenciar_tamanho.do?acao=alterar&idtamanho=${t.idTamanho}" class="btn btn-info">
+                                        <a href="./gerenciar_tamanho.do?acao=alterar&idtamanho=${t.idtamanho}" class="btn btn-info">
                                             <ion-icon name="pencil-sharp"></ion-icon>
                                         </a>
-                                        <a href="javascript:confirmarExclusao(${t.idTamanho});">
-                                            <button class="btn btn-danger">
-                                                <ion-icon name="trash-sharp"></ion-icon>
-                                            </button>
-                                        </a>
+                                        <button class="btn btn-danger" onclick="confirmarExclusao(${t.idtamanho},'${t.nome}')">
+                                            <ion-icon name="trash-sharp"></ion-icon>
+                                        </button>
                                     </td>
                                 </tr>
                             </c:forEach>
@@ -59,6 +57,7 @@
         <script type="text/javascript" src="datatables/jquery.js"></script>
         <script type="text/javascript" src="datatables/jquery.dataTables.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+        <script src="bootstrap/js/bootstrap.min.js"></script>
         <script src="https://unpkg.com/ionicons@5.0.0/dist/ionicons.js"></script>
         <script src="https://unpkg.com/scrollreveal"></script>
         <script type="text/javascript">
@@ -86,9 +85,9 @@
             })
         </script>
         <script>
-            function confirmarExclusao(idTamanho){
-                if (confirm('Deseja realmente excluir este Tamanho?')) {
-                    location.href="./gerenciar_tamanho.do?acao=excluir&idtamanho="+idTamanho;
+            function confirmarExclusao(idtamanho,nome){
+                if (confirm('Deseja realmente excluir este Tamanho '+nome+'?')) {
+                    location.href="./gerenciar_tamanho.do?acao=excluir&idtamanho="+idtamanho;
                 }
             }
         </script>

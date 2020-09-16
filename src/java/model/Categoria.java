@@ -1,14 +1,22 @@
 package model;
 public class Categoria {
-    private int idCategoria;
+    private int idcategoria;
     private String nome;
 
-    public int getIdCategoria() {
-        return idCategoria;
+    public Categoria() {
     }
 
-    public void setIdCategoria(int idCategoria) {
-        this.idCategoria = idCategoria;
+    public Categoria(int idcategoria, String nome) {
+        this.idcategoria = idcategoria;
+        this.nome = nome;
+    }
+
+    public int getIdcategoria() {
+        return idcategoria;
+    }
+
+    public void setIdcategoria(int idcategoria) {
+        this.idcategoria = idcategoria;
     }
 
     public String getNome() {
@@ -18,6 +26,5 @@ public class Categoria {
     public void setNome(String nome) {
         this.nome = nome;
     }
-    
     
 }

@@ -38,29 +38,45 @@ public class GerenciarUsuario extends HttpServlet {
            int idusuario = Integer.parseInt(request.getParameter("idusuario"));
             UsuarioDAO uDAO = new UsuarioDAO();
             if (request.getParameter("acao").equals("alterar")) {
-                Usuario u = uDAO.getUsuarioPorIdUsuario(idusuario);
-                if (u.getIdusuario() > 0) {
-                    RequestDispatcher disp = getServletContext().getRequestDispatcher("/form_usuario.jsp");
-                    request.setAttribute("u", u);
-                    disp.forward(request, response);
-                } else {
+                if(GerenciarLogin.verificarPermissao(request, response)){
+                    Usuario u = uDAO.getUsuarioPorIdusuario(idusuario);
+                    if (u.getIdusuario() > 0) {
+                        RequestDispatcher disp = getServletContext().getRequestDispatcher("/form_usuario.jsp");
+                        request.setAttribute("u", u);
+                        disp.forward(request, response);
+                    } else {
+                        PrintWriter out = response.getWriter();
+                        out.println("<script type='text/javascript'>");
+                        out.println("alert('Usuário não encontrado!');");
+                        out.println("location.href='listar_usuario.jsp';");
+                        out.println("</script>");
+                    }
+                }else{
                     PrintWriter out = response.getWriter();
                     out.println("<script type='text/javascript'>");
-                    out.println("alert('Usuário não encontrado!');");
+                    out.println("alert('Acesso Negado!');");
                     out.println("location.href='listar_usuario.jsp';");
                     out.println("</script>");
                 }
             }
             if (request.getParameter("acao").equals("excluir")) {
-                PrintWriter out = response.getWriter();
-                if (uDAO.excluir(idusuario)) {
+                if(GerenciarLogin.verificarPermissao(request, response)){
+                    PrintWriter out = response.getWriter();
+                    if (uDAO.excluir(idusuario)) {
+                        out.println("<script type='text/javascript'>");
+                        out.println("alert('Usuário desativado com sucesso!');");
+                        out.println("location.href='listar_usuario.jsp';");
+                        out.println("</script>");
+                    } else {
+                        out.println("<script type='text/javascript'>");
+                        out.println("alert('Não foi possível desativa Usuário!');");
+                        out.println("location.href='listar_usuario.jsp';");
+                        out.println("</script>");
+                    }
+                }else{
+                    PrintWriter out = response.getWriter();
                     out.println("<script type='text/javascript'>");
-                    out.println("alert('Usuário desativado com sucesso!');");
-                    out.println("location.href='listar_usuario.jsp';");
-                    out.println("</script>");
-                } else {
-                    out.println("<script type='text/javascript'>");
-                    out.println("alert('Não foi possível inativa Usuário!');");
+                    out.println("alert('Acesso Negado!');");
                     out.println("location.href='listar_usuario.jsp';");
                     out.println("</script>");
                 }
@@ -103,7 +119,7 @@ public class GerenciarUsuario extends HttpServlet {
             }
         } catch (Exception e) {
             mensagem = "Erro ao gravar Usuário!";
-            System.out.println("Erro ao Gravar Perfil: " + e.getMessage());
+            System.out.println("Erro ao Gravar usuário: " + e.getMessage());
         }
         PrintWriter out = response.getWriter();
         out.println("<script type='text/javascript'>");

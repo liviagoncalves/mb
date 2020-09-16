@@ -1,4 +1,5 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html lang="pt-br">
     <head>
@@ -30,11 +31,19 @@
                         <div class="form-row">
                             <div class="form-group col-md-6">
                                 <label for="icone">Icone</label>
-                                <input type="text" name="icone" class="form-control" id="icone" value="${m.icone}" required="">
+                                <input type="text" name="icone" class="form-control" id="icone" value="${m.icone}">
                             </div>
                             <div class="form-group col-md-6">
                                 <label for="exibir">Exibir</label>
-                                <input type="text" name="exibir" class="form-control" id="exibir" value="${m.exibir}" required="">
+                                <select id="exibir" class="form-control" name="exibir">
+                                    <option selected>Selecionar...</option>
+                                    <option value="1" 
+                                        <c:if test="${m.exibir==1}">selected=""</c:if>
+                                    >Sim</option>
+                                    <option value="2"
+                                        <c:if test="${m.exibir==2}">selected=""</c:if>
+                                    >Não</option>
+                                </select>
                             </div>
                         </div>
                         <button class="btn btn-info">Gravar</button>

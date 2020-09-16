@@ -1,14 +1,22 @@
 package model;
 public class Tamanho {
-    private int idTamanho;
+    private int idtamanho;
     private String nome;
 
-    public int getIdTamanho() {
-        return idTamanho;
+    public Tamanho() {
     }
 
-    public void setIdTamanho(int idTamanho) {
-        this.idTamanho = idTamanho;
+    public Tamanho(int idtamanho, String nome) {
+        this.idtamanho = idtamanho;
+        this.nome = nome;
+    }
+
+    public int getIdtamanho() {
+        return idtamanho;
+    }
+
+    public void setIdtamanho(int idtamanho) {
+        this.idtamanho = idtamanho;
     }
 
     public String getNome() {
@@ -18,5 +26,9 @@ public class Tamanho {
     public void setNome(String nome) {
         this.nome = nome;
     }
-    
+
+    @Override
+    public String toString() {
+        return "Tamanho{" + "idTamanho=" + idtamanho + ", nome=" + nome + '}';
+    }
 }

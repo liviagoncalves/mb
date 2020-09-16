@@ -1,5 +1,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!DOCTYPE html>
 <html lang="pt-br">
     <head>
@@ -20,19 +21,19 @@
                     <a href="form_cliente.jsp" class="btn btn-info">Novo Cadastro</a><br><br>
                     <table class="table table-hover table-striped" id="listarCliente">
                         <thead class="table-info">
-                            <tr>
-                            <th  scope="col">Id</th>
-                            <th  scope="col">Nome</th>
-                            <th  scope="col">CPF</th>
-                            <th  scope="col">Data de nascimento</th>
-                            <th  scope="col">Telefone</th>
-                            <th  scope="col">Fidelidade</th>
-                            <th  scope="col">Promoção</th>
-                            <th  scope="col">Opções</th>
+                            <tr class="text-center">
+                                <th  scope="col">Id</th>
+                                <th  scope="col">Nome</th>
+                                <th  scope="col">CPF</th>
+                                <th  scope="col">Data de nascimento</th>
+                                <th  scope="col">Telefone</th>
+                                <th  scope="col">Fidelidade</th>
+                                <th  scope="col">Promoção</th>
+                                <th  scope="col">Opções</th>
                             </tr>
                         </thead>
                         <tfoot class="table-info">
-                            <tr>
+                            <tr class="text-center">
                                 <th  scope="col">Id</th>
                                 <th  scope="col">Nome</th>
                                 <th  scope="col">CPF</th>
@@ -46,23 +47,36 @@
                         <jsp:useBean class="persistencia.ClienteDAO" id="cDAO"/>
                         <tbody>
                             <c:forEach var="c" items="${cDAO.lista}">
-                                <tr>
-                                    <td>${c.idCliente}</td>
+                                <tr class="text-center">
+                                    <td>${c.idcliente}</td>
                                     <td>${c.nome}</td>
                                     <td>${c.cpf}</td>
-                                    <td>${c.data_nasc}</td>
+                                    <td class="text-center"><fmt:formatDate pattern="dd/MM/YYYY" value="${c.data_nasc}"/></td>
                                     <td>${c.telefone}</td>
-                                    <td>${c.fidelidade}</td>
-                                    <td>${c.promocao}</td>
                                     <td>
-                                        <a href="./gerenciar_cliente.do?acao=alterar&idcliente=${c.idCliente}" class="btn btn-info">
+                                        <c:if test="${c.fidelidade==1}">
+                                            Sim
+                                        </c:if>
+                                        <c:if test="${c.fidelidade==2}">
+                                            Não
+                                        </c:if>
+                                    </td>
+                                    <td>
+                                        <c:if test="${c.promocao==1}">
+                                            Sim
+                                        </c:if>
+                                        <c:if test="${c.promocao==2}">
+                                            Não
+                                        </c:if>
+                                    </td>
+                                    <td>
+                                        <a href="./gerenciar_cliente.do?acao=alterar&idcliente=${c.idcliente}" class="btn btn-outline-info">
                                             <ion-icon name="pencil-sharp"></ion-icon>
                                         </a>
-                                        <a href="javascript:confirmarExclusao(${c.idCliente});">
-                                            <button class="btn btn-danger">
-                                                <ion-icon name="trash-sharp"></ion-icon>
-                                            </button>
-                                        </a>
+                                        <button class="btn btn-outline-danger" onclick="confirmarExclusao(${c.idcliente},'${c.nome}')">
+                                            <ion-icon name="trash-sharp"></ion-icon>
+                                        </button>
+                                        <a href="form_vendas.jsp?acao=novo&idcliente=${c.idcliente}" class="btn btn-outline-primary">Realizar Venda</a>
                                     </td>
                                 </tr>
                             </c:forEach>
@@ -75,6 +89,7 @@
         <script type="text/javascript" src="datatables/jquery.dataTables.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
         <script src="https://unpkg.com/ionicons@5.0.0/dist/ionicons.js"></script>
+        <script src="bootstrap/js/bootstrap.min.js"></script>
         <script src="https://unpkg.com/scrollreveal"></script>
         <script type="text/javascript">
             $(document).ready(function(){
@@ -101,9 +116,9 @@
             })
         </script>
         <script>
-            function confirmarExclusao(idCliente){
-                if (confirm('Deseja realmente excluir este Cliente?')) {
-                    location.href="./gerenciar_cliente.do?acao=excluir&idcliente="+idCliente;
+            function confirmarExclusao(idcliente, nome){
+                if (confirm('Deseja realmente excluir este Cliente '+nome+'?')) {
+                    location.href="./gerenciar_cliente.do?acao=excluir&idcliente="+idcliente;
                 }
             }
         </script>

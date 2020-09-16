@@ -40,13 +40,13 @@
                                     <td>${p.idperfil}</td>
                                     <td>${p.nome}</td>
                                     <td>
-                                        <a href="./gerenciar_perfil.do?acao=alterar&idperfil=${p.idperfil}" class="btn btn-info">
+                                        <a href="./gerenciar_perfil.do?acao=alterar&idperfil=${p.idperfil}" class="btn btn-outline-info">
                                             <ion-icon name="pencil-sharp"></ion-icon>
                                         </a>
-                                        <button class="btn btn-danger" onclick="confirmarExclusao(${p.idperfil},'${p.nome}')">
+                                        <button class="btn btn-outline-danger" onclick="confirmarExclusao(${p.idperfil},'${p.nome}')">
                                             <ion-icon name="trash-sharp"></ion-icon>
                                         </button>
-                                                
+                                            <a class="btn btn-outline-primary" href="gerenciar_menu_perfil.do?acao=gerenciar&idperfil=${p.idperfil}">Acessos</a>
                                     </td>
                                 </tr>
                             </c:forEach>
@@ -58,6 +58,7 @@
         <script type="text/javascript" src="datatables/jquery.js"></script>
         <script type="text/javascript" src="datatables/jquery.dataTables.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+        <script src="bootstrap/js/bootstrap.min.js"></script>
         <script src="https://unpkg.com/ionicons@5.0.0/dist/ionicons.js"></script>
         <script src="https://unpkg.com/scrollreveal"></script>
         <script type="text/javascript">

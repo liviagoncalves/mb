@@ -74,7 +74,7 @@
         <script src="https://unpkg.com/scrollreveal"></script>
         <script type="text/javascript">
             $(document).ready(function(){
-                $("#listarPerfil").dataTable({
+                $("#listarUsuario").dataTable({
                     "bJQueryUI":true,
                     "oLanguage":{
                         "sProcessing":"Processando...",
@@ -98,7 +98,7 @@
         </script>
         <script>
             function confirmarExclusao(idusuario, nome){
-                if(confirm('Deseja realmente Desativar o usuario '+nome+'?')){
+                if(confirm('Deseja realmente Desativar o usuário '+nome+'?')){
                     location.href='gerenciar_usuario.do?acao=excluir&idusuario='+idusuario;
                 }
             }

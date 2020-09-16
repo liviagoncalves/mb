@@ -32,29 +32,45 @@ public class GerenciarTamanho extends HttpServlet {
             int idtamanho = Integer.parseInt(request.getParameter("idtamanho"));
             TamanhoDAO tDAO = new TamanhoDAO();
             if (request.getParameter("acao").equals("alterar")) {
-                Tamanho t = tDAO.getTamanhoPorIdTamanho(idtamanho);
-                if (t.getIdTamanho() > 0) {
-                    RequestDispatcher disp = getServletContext().getRequestDispatcher("/form_tamanho.jsp");
-                    request.setAttribute("t", t);
-                    disp.forward(request, response);
-                } else {
+                if(GerenciarLogin.verificarPermissao(request, response)){
+                    Tamanho t = tDAO.getTamanhoPorIdtamanho(idtamanho);
+                    if (t.getIdtamanho() > 0) {
+                        RequestDispatcher disp = getServletContext().getRequestDispatcher("/form_tamanho.jsp");
+                        request.setAttribute("t", t);
+                        disp.forward(request, response);
+                    } else {
+                        PrintWriter out = response.getWriter();
+                        out.println("<script type='text/javascript'>");
+                        out.println("alert('Tamanho não encontrado!');");
+                        out.println("location.href='listar_tamanho.jsp';");
+                        out.println("</script>");
+                    }
+                }else{
                     PrintWriter out = response.getWriter();
                     out.println("<script type='text/javascript'>");
-                    out.println("alert('Tamanho não encontrado!');");
+                    out.println("alert('Acesso Negado!');");
                     out.println("location.href='listar_tamanho.jsp';");
                     out.println("</script>");
                 }
             }
             if (request.getParameter("acao").equals("excluir")) {
-                PrintWriter out = response.getWriter();
-                if (tDAO.excluir(idtamanho)) {
+                if(GerenciarLogin.verificarPermissao(request, response)){
+                    PrintWriter out = response.getWriter();
+                    if (tDAO.excluir(idtamanho)) {
+                        out.println("<script type='text/javascript'>");
+                        out.println("alert('Tamanho excluido com sucesso!');");
+                        out.println("location.href='listar_tamanho.jsp';");
+                        out.println("</script>");
+                    } else {
+                        out.println("<script type='text/javascript'>");
+                        out.println("alert('Não foi possível excluir Tamanho!');");
+                        out.println("location.href='listar_tamanho.jsp';");
+                        out.println("</script>");
+                    }
+                }else{
+                    PrintWriter out = response.getWriter();
                     out.println("<script type='text/javascript'>");
-                    out.println("alert('Tamanho excluido com sucesso!');");
-                    out.println("location.href='listar_tamanho.jsp';");
-                    out.println("</script>");
-                } else {
-                    out.println("<script type='text/javascript'>");
-                    out.println("alert('Não foi possível excluir Tamanho!');");
+                    out.println("alert('Acesso Negado!');");
                     out.println("location.href='listar_tamanho.jsp';");
                     out.println("</script>");
                 }
@@ -81,7 +97,7 @@ public class GerenciarTamanho extends HttpServlet {
         try {
             Tamanho t = new Tamanho();
             if (!request.getParameter("idtamanho").isEmpty()) {
-                t.setIdTamanho(Integer.parseInt(request.getParameter("idtamanho")));
+                t.setIdtamanho(Integer.parseInt(request.getParameter("idtamanho")));
             }
             t.setNome(request.getParameter("nome"));
             TamanhoDAO tDAO = new TamanhoDAO();

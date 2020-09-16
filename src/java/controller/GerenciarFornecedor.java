@@ -39,29 +39,45 @@ public class GerenciarFornecedor extends HttpServlet {
             int idfornecedor = Integer.parseInt(request.getParameter("idfornecedor"));
             FornecedorDAO fDAO = new FornecedorDAO();
             if (request.getParameter("acao").equals("alterar")) {
-                Fornecedor f = fDAO.getFornecedorPorIdFornecedor(idfornecedor);
-                if (f.getIdfornecedor() > 0) {
-                    RequestDispatcher disp = getServletContext().getRequestDispatcher("/form_fornecedor.jsp");
-                    request.setAttribute("for", f);
-                    disp.forward(request, response);
-                } else {
+                if(GerenciarLogin.verificarPermissao(request, response)){
+                    Fornecedor f = fDAO.getFornecedorPorIdfornecedor(idfornecedor);
+                    if (f.getIdfornecedor() > 0) {
+                        RequestDispatcher disp = getServletContext().getRequestDispatcher("/form_fornecedor.jsp");
+                        request.setAttribute("for", f);
+                        disp.forward(request, response);
+                    } else {
+                        PrintWriter out = response.getWriter();
+                        out.println("<script type='text/javascript'>");
+                        out.println("alert('Fornecedor não encontrado!');");
+                        out.println("location.href='listar_fornecedor.jsp';");
+                        out.println("</script>");
+                    }
+                }else{
                     PrintWriter out = response.getWriter();
                     out.println("<script type='text/javascript'>");
-                    out.println("alert('Fornecedor não encontrado!');");
+                    out.println("alert('Acesso Negado!');");
                     out.println("location.href='listar_fornecedor.jsp';");
                     out.println("</script>");
                 }
             }
             if (request.getParameter("acao").equals("excluir")) {
-                PrintWriter out = response.getWriter();
-                if (fDAO.excluir(idfornecedor)) {
+                if(GerenciarLogin.verificarPermissao(request, response)){
+                    PrintWriter out = response.getWriter();
+                    if (fDAO.excluir(idfornecedor)) {
+                        out.println("<script type='text/javascript'>");
+                        out.println("alert('Fornecedor excluido com sucesso!');");
+                        out.println("location.href='listar_fornecedor.jsp';");
+                        out.println("</script>");
+                    } else {
+                        out.println("<script type='text/javascript'>");
+                        out.println("alert('Não foi possível excluir Fornecedor!');");
+                        out.println("location.href='listar_fornecedor.jsp';");
+                        out.println("</script>");
+                    }
+                }else{
+                    PrintWriter out = response.getWriter();
                     out.println("<script type='text/javascript'>");
-                    out.println("alert('Fornecedor excluido com sucesso!');");
-                    out.println("location.href='listar_fornecedor.jsp';");
-                    out.println("</script>");
-                } else {
-                    out.println("<script type='text/javascript'>");
-                    out.println("alert('Não foi possível excluir Fornecedor!');");
+                    out.println("alert('Acesso Negado!');");
                     out.println("location.href='listar_fornecedor.jsp';");
                     out.println("</script>");
                 }

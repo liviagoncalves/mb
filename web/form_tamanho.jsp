@@ -16,7 +16,7 @@
                 <div class="container-fluid">
                     <h1 class="display-5 text-center">Cadastrar Tamanho</h1>
                     <form action="gerenciar_tamanho.do" method="POST">
-                        <input type="hidden" name="idtamanho" id="idtamanho" value="${t.idTamanho}"/>
+                        <input type="hidden" name="idtamanho" id="idtamanho" value="${t.idtamanho}"/>
                         <div class="row">
                             <div class="form-group col-sm-8">
                                 <label for="nome" class="control-label">Nome</label>

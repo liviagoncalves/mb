@@ -16,7 +16,6 @@ import persistencia.MarcaDAO;
  */
 public class GerenciarMarca extends HttpServlet {
 
-
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -33,29 +32,45 @@ public class GerenciarMarca extends HttpServlet {
             int idmarca = Integer.parseInt(request.getParameter("idmarca"));
             MarcaDAO mDAO = new MarcaDAO();
             if (request.getParameter("acao").equals("alterar")) {
-                Marca m = mDAO.getMarcaPorIdMarca(idmarca);
-                if (m.getIdMarca() > 0) {
-                    RequestDispatcher disp = getServletContext().getRequestDispatcher("/form_marca.jsp");
-                    request.setAttribute("m", m);
-                    disp.forward(request, response);
-                } else {
+                if(GerenciarLogin.verificarPermissao(request, response)){
+                    Marca m = mDAO.getMarcaPorIdmarca(idmarca);
+                    if (m.getIdmarca() > 0) {
+                        RequestDispatcher disp = getServletContext().getRequestDispatcher("/form_marca.jsp");
+                        request.setAttribute("m", m);
+                        disp.forward(request, response);
+                    } else {
+                        PrintWriter out = response.getWriter();
+                        out.println("<script type='text/javascript'>");
+                        out.println("alert('Marca não encontrado!');");
+                        out.println("location.href='listar_marca.jsp';");
+                        out.println("</script>");
+                    }
+                }else{
                     PrintWriter out = response.getWriter();
                     out.println("<script type='text/javascript'>");
-                    out.println("alert('Marca não encontrado!');");
+                    out.println("alert('Acesso Negado!');");
                     out.println("location.href='listar_marca.jsp';");
                     out.println("</script>");
                 }
             }
             if (request.getParameter("acao").equals("excluir")) {
-                PrintWriter out = response.getWriter();
-                if (mDAO.excluir(idmarca)) {
+                if(GerenciarLogin.verificarPermissao(request, response)){
+                    PrintWriter out = response.getWriter();
+                    if (mDAO.excluir(idmarca)) {
+                        out.println("<script type='text/javascript'>");
+                        out.println("alert('Marca excluido com sucesso!');");
+                        out.println("location.href='listar_marca.jsp';");
+                        out.println("</script>");
+                    } else {
+                        out.println("<script type='text/javascript'>");
+                        out.println("alert('Não foi possível excluir Marca!');");
+                        out.println("location.href='listar_marca.jsp';");
+                        out.println("</script>");
+                    }
+                }else{
+                    PrintWriter out = response.getWriter();
                     out.println("<script type='text/javascript'>");
-                    out.println("alert('Marca excluido com sucesso!');");
-                    out.println("location.href='listar_marca.jsp';");
-                    out.println("</script>");
-                } else {
-                    out.println("<script type='text/javascript'>");
-                    out.println("alert('Não foi possível excluir Marca!');");
+                    out.println("alert('Acesso Negado!');");
                     out.println("location.href='listar_marca.jsp';");
                     out.println("</script>");
                 }
@@ -81,7 +96,7 @@ public class GerenciarMarca extends HttpServlet {
         try {
             Marca m = new Marca();
             if (!request.getParameter("idmarca").isEmpty()) {
-                m.setIdMarca(Integer.parseInt(request.getParameter("idmarca")));
+                m.setIdmarca(Integer.parseInt(request.getParameter("idmarca")));
             }
             m.setNome(request.getParameter("nome"));
             MarcaDAO mDAO = new MarcaDAO();

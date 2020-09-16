@@ -1,14 +1,22 @@
 package model;
 public class Marca {
-    private int idMarca;
+    private int idmarca;
     private String nome;
 
-    public int getIdMarca() {
-        return idMarca;
+    public Marca() {
     }
 
-    public void setIdMarca(int idMarca) {
-        this.idMarca = idMarca;
+    public Marca(int idmarca, String nome) {
+        this.idmarca = idmarca;
+        this.nome = nome;
+    }
+
+    public int getIdmarca() {
+        return idmarca;
+    }
+
+    public void setIdmarca(int idmarca) {
+        this.idmarca = idmarca;
     }
 
     public String getNome() {
@@ -18,4 +26,12 @@ public class Marca {
     public void setNome(String nome) {
         this.nome = nome;
     }
+
+    @Override
+    public String toString() {
+        return "Marca{" + "idMarca=" + idmarca + ", nome=" + nome + '}';
+    }
+    
+    
+    
 }

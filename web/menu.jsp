@@ -1,11 +1,14 @@
+<%@page import="controller.GerenciarLogin"%>
+<%@page import="model.Usuario"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%
-    /*HttpSession sessao = request.getSession();
-    if (sessao.getAttribute("usuario") == null) {
-        response.sendRedirect("login.jsp");
-    }*/
+    Usuario ulogado = GerenciarLogin.verificarAcesso(request, response);
+    request.setAttribute("ulogado", ulogado);
+    
 %>
 <header>
+    
     <nav class="navbar navbar-expand-lg navbar-dark fixed-top bg-white">
         <div class="container-fluid">
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" style="background-color: rgb(10,186,181);">
@@ -13,39 +16,25 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarCollapse">
                 <ul class="navbar-nav mr-auto">
-                    <li class="nav-item active">
-                        <a class="nav-link" href="index.jsp">Home <span class="sr-only">(current)</span></a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="listar_perfil.jsp">Perfil</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="listar_menu.jsp">Menus</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="listar_usuario.jsp">Usuário</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="listar_cliente.jsp">Cliente</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="listar_produto.jsp">Produto</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="listar_fornecedor.jsp">Fornecedor</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="listar_vendas.jsp">Vendas</a>
-                    </li>
-                    <li>
-                        <a class="nav-link" href="#">
-                            <ion-icon name="person-circle-outline"></ion-icon>
-                        </a>
-                    </li>
+                    <c:if test="${ulogado!=null && ulogado.perfil!=null}">
+                        <c:forEach var="menu" items="${ulogado.perfil.menu}">
+                            <c:if test="${menu.exibir==1}">
+                                <li class="nav-item active">
+                                    <a class="nav-link" href="${menu.link}">${menu.nome}</a>
+                                </li>
+                            </c:if>
+                        </c:forEach>
+                    </c:if>
                 </ul>
             </div>
+            <div class="pull-right">
+                Bem Vindo, <c:if test="${ulogado!=null}">${ulogado.nome}</c:if>
+            </div>
+            <div class="pull-right">
+                <a href="gerenciar_login.do">Sair</a>
+            </div>
         </div>
-    </nav>
+    </nav> 
 </header>
 
 <link rel="stylesheet" href="estilo/menu.css"/>

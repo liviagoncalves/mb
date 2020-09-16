@@ -37,17 +37,15 @@
                         <tbody>
                             <c:forEach var="cor" items="${corDAO.lista}">
                                 <tr>
-                                    <td>${cor.idCor}</td>
+                                    <td>${cor.idcor}</td>
                                     <td>${cor.nome}</td>
                                     <td>
-                                        <a href="./gerenciar_cor.do?acao=alterar&idcor=${cor.idCor}" class="btn btn-info">
+                                        <a href="./gerenciar_cor.do?acao=alterar&idcor=${cor.idcor}" class="btn btn-info">
                                             <ion-icon name="pencil-sharp"></ion-icon>
                                         </a>
-                                        <a href="javascript:confirmarExclusao(${cor.idCor});">
-                                            <button class="btn btn-danger">
-                                                <ion-icon name="trash-sharp"></ion-icon>
-                                            </button>
-                                        </a>
+                                        <button class="btn btn-danger" onclick="confirmarExclusao(${cor.idcor},'${cor.nome}')">
+                                            <ion-icon name="trash-sharp"></ion-icon>
+                                        </button>
                                     </td>
                                 </tr>
                             </c:forEach>
@@ -59,6 +57,7 @@
         <script type="text/javascript" src="datatables/jquery.js"></script>
         <script type="text/javascript" src="datatables/jquery.dataTables.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+        <script src="bootstrap/js/bootstrap.min.js"></script>
         <script src="https://unpkg.com/ionicons@5.0.0/dist/ionicons.js"></script>
         <script src="https://unpkg.com/scrollreveal"></script>
         <script type="text/javascript">
@@ -86,9 +85,9 @@
             })
         </script>
         <script>
-            function confirmarExclusao(idCor){
-                if (confirm('Deseja realmente excluir este Cor?')) {
-                    location.href="./gerenciar_cor.do?acao=excluir&idcor="+idCor;
+            function confirmarExclusao(idcor, nome){
+                if (confirm('Deseja realmente excluir este Cor '+nome+'?')) {
+                    location.href="./gerenciar_cor.do?acao=excluir&idcor="+idcor;
                 }
             }
         </script>

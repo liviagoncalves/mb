@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import model.Menu;
 import model.Perfil;
 
 public class PerfilDAO {
@@ -45,6 +46,8 @@ public class PerfilDAO {
             if (rs.next()) {
                 p.setIdperfil(idperfil);
                 p.setNome(rs.getString("nome"));
+                p.setMenu(menuVinculadosPorPerfil(idperfil));
+                p.setNaoMenu(menuNaoVinculadosPorPerfil(idperfil));
             }
         } catch (SQLException e) {
             System.out.println("Erro de SQL: " + e.getMessage());
@@ -80,6 +83,80 @@ public class PerfilDAO {
             ps.execute();
             return true;
         } catch (SQLException e) {
+            System.out.println("Erro de SQL: " + e.getMessage());
+            return false;
+        }
+    }
+    public ArrayList<Menu> menuVinculadosPorPerfil(int idperfil){
+        ArrayList<Menu> lista = new ArrayList<Menu>();
+        try {
+            String sql = "SELECT m.* FROM menu_perfil as mp, menu as m "
+                    + "WHERE mp.idmenu = m.idmenu AND mp.idperfil = ?";
+            PreparedStatement ps = conexao.prepareStatement(sql);
+            ps.setInt(1, idperfil);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {                
+                Menu m = new Menu();
+                m.setIdmenu(rs.getInt("m.idmenu"));
+                m.setNome(rs.getString("m.nome"));
+                m.setLink(rs.getString("m.link"));
+                m.setIcone(rs.getString("m.icone"));
+                m.setExibir(rs.getInt("m.exibir"));
+                lista.add(m);
+            }
+        } catch (Exception e) {
+            System.out.println("Erro de SQL: " + e.getMessage());
+        }
+        return lista;
+    }
+    public boolean vincular(int idmenu, int idperfil){
+        try {
+            String sql = "INSERT INTO menu_perfil(idmenu, idperfil) "
+                    + "VALUES (?,?)";
+            PreparedStatement ps = conexao.prepareStatement(sql);
+            ps.setInt(1, idmenu);
+            ps.setInt(2, idperfil);
+            ps.execute();
+            return true;
+        } catch (Exception e) {
+            System.out.println("Erro de SQL: " + e.getMessage());
+            return false;
+        }
+    }
+    public ArrayList<Menu> menuNaoVinculadosPorPerfil(int idperfil){
+        ArrayList<Menu> lista = new ArrayList<Menu>();
+        try {
+            String sql = "SELECT m.* FROM menu as m "
+                    + "WHERE m.idmenu NOT IN "
+                    + "(SELECT mp.idmenu FROM menu_perfil as mp "
+                    + "WHERE mp.idperfil=?)";
+            PreparedStatement ps = conexao.prepareStatement(sql);
+            ps.setInt(1, idperfil);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {                
+                Menu m = new Menu();
+                m.setIdmenu(rs.getInt("m.idmenu"));
+                m.setNome(rs.getString("m.nome"));
+                m.setLink(rs.getString("m.link"));
+                m.setIcone(rs.getString("m.icone"));
+                m.setExibir(rs.getInt("m.exibir"));
+                lista.add(m);
+            }
+        } catch (Exception e) {
+            System.out.println("Erro de SQL: " + e.getMessage());
+        }
+        return lista;
+    }
+    public boolean desvincular(int idmenu, int idperfil){
+        try {
+            String sql = "DELETE FROM menu_perfil "
+                    + "WHERE idmenu=? AND idperfil=?";
+            PreparedStatement ps = conexao.prepareStatement(sql);
+            ps.setInt(1, idmenu);
+            ps.setInt(2, idperfil);
+            ps.execute();
+            return true;
+        } catch (Exception e) {
             System.out.println("Erro de SQL: " + e.getMessage());
             return false;
         }

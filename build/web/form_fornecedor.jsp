@@ -15,8 +15,8 @@
             <div class="jumbotron jumbotron-fluid formulario">
                 <div class="container-fluid">
                     <h1 class="display-5 text-center">Cadastrar Fornecedor</h1>
-                    <form action="gerenciar_fornecedor.do" method="POST">
-                        <input type="hidden" name="idfornecedor" id="idfornecedor" value="${for.idFornecedor}"/>
+                    <form action="gerenciar_fornecedor.do" method="POST" id="meuForm">
+                        <input type="hidden" name="idfornecedor" id="idfornecedor" value="${for.idfornecedor}"/>
                         <div class="form-row">
                             <div class="form-group col-md-6">
                                 <label for="razao_social">Razão Social</label>
@@ -30,7 +30,7 @@
                         <div class="form-row">
                             <div class="form-group col-md-6">
                                 <label for="inscricao_estadual">Inscricão Estadual</label>
-                                <input type="text" name="inscricao_estadual" class="form-control" id="inscricao_estadual" value="${for.inscricao_estadual}" required="">
+                                <input type="text" name="inscricao_estadual" class="form-control" id="inscricao_estadual" value="${for.inscricao_estadual}">
                             </div>
                             <div class="form-group col-md-6">
                                 <label for="telefone">Telefone</label>
@@ -54,7 +54,7 @@
                         <div class="form-row">
                             <div class="form-group col-md-3">
                                 <label for="complemento">Complemento</label>
-                                <input type="text" name="complemento" class="form-control" id="complemento" value="${for.complemento}" required="">
+                                <input type="text" name="complemento" class="form-control" id="complemento" value="${for.complemento}">
                             </div>
                             <div class="form-group col-md-3">
                                 <label for="bairro">Bairro</label>
@@ -81,5 +81,80 @@
         <script src="bootstrap/js/bootstrap.min.js"></script>
         <script src="https://unpkg.com/ionicons@5.0.0/dist/ionicons.js"></script>
         <script src="https://unpkg.com/scrollreveal"></script>
+        <script type="text/javascript" src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.5.0.min.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.2/jquery.validate.min.js"></script>
+        <script type="text/javascript" src="datatables/jquery.mask.js"></script>
+        <script type="text/javascript">
+            $(document).ready(function(){
+               var $seuCampoCnpj = $("#cnpj");
+               $seuCampoCnpj.mask('00.000.000/0000-00', {reverse: true});
+               var $seuCampoTelefone = $("#telefone");
+               $seuCampoTelefone.mask('(00)00000-0000');
+               var $seuCampoCep = $("#cep");
+               $seuCampoCep.mask('00.000-000');
+            });
+        </script>
+        <script>
+            $(document).ready(function() {
+
+                function limpa_formulário_cep() {
+                    // Limpa valores do formulário de cep.
+                    $("#endereco").val("");
+                    $("#bairro").val("");
+                    $("#cidade").val("");
+                    $("#uf").val("");
+                }
+
+                //Quando o campo cep perde o foco.
+                $("#cep").blur(function() {
+
+                    //Nova variável "cep" somente com dígitos.
+                    var cep = $(this).val().replace(/\D/g, '');
+
+                    //Verifica se campo cep possui valor informado.
+                    if (cep != "") {
+
+                        //Expressão regular para validar o CEP.
+                        var validacep = /^[0-9]{8}$/;
+
+                        //Valida o formato do CEP.
+                        if(validacep.test(cep)) {
+
+                            //Preenche os campos com "..." enquanto consulta webservice.
+                            $("#endereco").val("...");
+                            $("#bairro").val("...");
+                            $("#cidade").val("...");
+                            $("#uf").val("...");
+
+                            //Consulta o webservice viacep.com.br/
+                            $.getJSON("https://viacep.com.br/ws/"+ cep +"/json/?callback=?", function(dados) {
+
+                                if (!("erro" in dados)) {
+                                    //Atualiza os campos com os valores da consulta.
+                                    $("#endereco").val(dados.logradouro);
+                                    $("#bairro").val(dados.bairro);
+                                    $("#cidade").val(dados.localidade);
+                                    $("#uf").val(dados.uf);
+                                } //end if.
+                                else {
+                                    //CEP pesquisado não foi encontrado.
+                                    limpa_formulário_cep();
+                                    alert("CEP não encontrado.");
+                                }
+                            });
+                        } //end if.
+                        else {
+                            //cep é inválido.
+                            limpa_formulário_cep();
+                            alert("Formato de CEP inválido.");
+                        }
+                    } //end if.
+                    else {
+                        //cep sem valor, limpa formulário.
+                        limpa_formulário_cep();
+                    }
+                });
+            });
+    </script>
     </body>
 </html>

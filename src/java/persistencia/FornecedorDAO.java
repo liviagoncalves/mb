@@ -45,7 +45,7 @@ public class FornecedorDAO {
         }
         return resultado;
     }
-    public Fornecedor getFornecedorPorIdFornecedor(int idfornecedor){
+    public Fornecedor getFornecedorPorIdfornecedor(int idfornecedor){
         Fornecedor f = new Fornecedor();
         try {
             String sql = "SELECT * FROM fornecedor WHERE idfornecedor=?";
@@ -54,7 +54,6 @@ public class FornecedorDAO {
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
                 f.setIdfornecedor(idfornecedor);
-                f.setIdfornecedor(rs.getInt("idfornecedor"));
                 f.setRazao_social(rs.getString("razao_social"));
                 f.setCnpj(rs.getString("cnpj"));
                 f.setInscricao_estadual(rs.getString("inscricao_estadual"));

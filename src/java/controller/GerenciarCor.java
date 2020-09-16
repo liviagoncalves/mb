@@ -33,29 +33,45 @@ public class GerenciarCor extends HttpServlet {
             int idcor = Integer.parseInt(request.getParameter("idcor"));
             CorDAO cDAO = new CorDAO();
             if (request.getParameter("acao").equals("alterar")) {
-                Cor c = cDAO.getCorPorIdCor(idcor);
-                if (c.getIdCor() > 0) {
-                    RequestDispatcher disp = getServletContext().getRequestDispatcher("/form_cor.jsp");
-                    request.setAttribute("cor", c);
-                    disp.forward(request, response);
-                } else {
+                if(GerenciarLogin.verificarPermissao(request, response)){
+                    Cor c = cDAO.getCorPorIdcor(idcor);
+                    if (c.getIdcor() > 0) {
+                        RequestDispatcher disp = getServletContext().getRequestDispatcher("/form_cor.jsp");
+                        request.setAttribute("cor", c);
+                        disp.forward(request, response);
+                    } else {
+                        PrintWriter out = response.getWriter();
+                        out.println("<script type='text/javascript'>");
+                        out.println("alert('Cor não encontrado!');");
+                        out.println("location.href='listar_cor.jsp';");
+                        out.println("</script>");
+                    }
+                }else{
                     PrintWriter out = response.getWriter();
                     out.println("<script type='text/javascript'>");
-                    out.println("alert('Cor não encontrado!');");
+                    out.println("alert('Acesso Negado!');");
                     out.println("location.href='listar_cor.jsp';");
                     out.println("</script>");
                 }
             }
             if (request.getParameter("acao").equals("excluir")) {
-                PrintWriter out = response.getWriter();
-                if (cDAO.excluir(idcor)) {
+                if(GerenciarLogin.verificarPermissao(request, response)){
+                    PrintWriter out = response.getWriter();
+                    if (cDAO.excluir(idcor)) {
+                        out.println("<script type='text/javascript'>");
+                        out.println("alert('Cor excluido com sucesso!');");
+                        out.println("location.href='listar_cor.jsp';");
+                        out.println("</script>");
+                    } else {
+                        out.println("<script type='text/javascript'>");
+                        out.println("alert('Não foi possível excluir Cpr!');");
+                        out.println("location.href='listar_cor.jsp';");
+                        out.println("</script>");
+                    }
+                }else{
+                    PrintWriter out = response.getWriter();
                     out.println("<script type='text/javascript'>");
-                    out.println("alert('Cor excluido com sucesso!');");
-                    out.println("location.href='listar_cor.jsp';");
-                    out.println("</script>");
-                } else {
-                    out.println("<script type='text/javascript'>");
-                    out.println("alert('Não foi possível excluir Cpr!');");
+                    out.println("alert('Acesso Negado!');");
                     out.println("location.href='listar_cor.jsp';");
                     out.println("</script>");
                 }
@@ -81,7 +97,7 @@ public class GerenciarCor extends HttpServlet {
         try {
             Cor c = new Cor();
             if (!request.getParameter("idcor").isEmpty()) {
-                c.setIdCor(Integer.parseInt(request.getParameter("idcor")));
+                c.setIdcor(Integer.parseInt(request.getParameter("idcor")));
             }
             c.setNome(request.getParameter("nome"));
             CorDAO cDAO = new CorDAO();

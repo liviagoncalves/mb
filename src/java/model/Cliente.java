@@ -1,11 +1,15 @@
 package model;
+
+import java.util.Date;
+import persistencia.ClienteDAO;
+
 public class Cliente {
-    private int idCliente;
+    private int idcliente;
     private String nome;
     private String email;
     private String cpf;
     private String rg;
-    private String data_nasc;
+    private Date data_nasc;
     private String sexo;
     private String telefone;
     private String cep;
@@ -15,16 +19,40 @@ public class Cliente {
     private String bairro;
     private String cidade;
     private String uf;
-    private String cliente_desde;
+    private Date cliente_desde;
     private String fidelidade;
     private String promocao;
 
-    public int getIdCliente() {
-        return idCliente;
+    public Cliente() {
     }
 
-    public void setIdCliente(int idCliente) {
-        this.idCliente = idCliente;
+    public Cliente(int idcliente, String nome, String email, String cpf, String rg, Date data_nasc, String sexo, String telefone, String cep, String endereco, int numero, String complemento, String bairro, String cidade, String uf, Date cliente_desde, String fidelidade, String promocao) {
+        this.idcliente = idcliente;
+        this.nome = nome;
+        this.email = email;
+        this.cpf = cpf;
+        this.rg = rg;
+        this.data_nasc = data_nasc;
+        this.sexo = sexo;
+        this.telefone = telefone;
+        this.cep = cep;
+        this.endereco = endereco;
+        this.numero = numero;
+        this.complemento = complemento;
+        this.bairro = bairro;
+        this.cidade = cidade;
+        this.uf = uf;
+        this.cliente_desde = cliente_desde;
+        this.fidelidade = fidelidade;
+        this.promocao = promocao;
+    }
+
+    public int getIdcliente() {
+        return idcliente;
+    }
+
+    public void setIdcliente(int idcliente) {
+        this.idcliente = idcliente;
     }
 
     public String getNome() {
@@ -59,11 +87,11 @@ public class Cliente {
         this.rg = rg;
     }
 
-    public String getData_nasc() {
+    public Date getData_nasc() {
         return data_nasc;
     }
 
-    public void setData_nasc(String data_nasc) {
+    public void setData_nasc(Date data_nasc) {
         this.data_nasc = data_nasc;
     }
 
@@ -139,11 +167,11 @@ public class Cliente {
         this.uf = uf;
     }
 
-    public String getCliente_desde() {
+    public Date getCliente_desde() {
         return cliente_desde;
     }
 
-    public void setCliente_desde(String cliente_desde) {
+    public void setCliente_desde(Date cliente_desde) {
         this.cliente_desde = cliente_desde;
     }
 
@@ -163,4 +191,9 @@ public class Cliente {
         this.promocao = promocao;
     }
     
+    @Override
+    public String toString() {
+        return "Cliente{" + "nome=" + nome + '}';
+    }
+   
 }

@@ -25,7 +25,7 @@ public class TamanhoDAO {
             ResultSet rs = stmt.executeQuery("select * from tamanho");
             while (rs.next()) {                
                 Tamanho t = new Tamanho();
-                t.setIdTamanho(rs.getInt("idtamanho"));
+                t.setIdtamanho(rs.getInt("idtamanho"));
                 t.setNome(rs.getString("nome"));
                 resultado.add(t);
             }
@@ -34,7 +34,7 @@ public class TamanhoDAO {
         }
         return resultado;
     }
-    public Tamanho getTamanhoPorIdTamanho(int idtamanho){
+    public Tamanho getTamanhoPorIdtamanho(int idtamanho){
         Tamanho t = new Tamanho();
         try {
             String sql = "SELECT * FROM tamanho WHERE idtamanho=?";
@@ -42,7 +42,7 @@ public class TamanhoDAO {
             ps.setInt(1, idtamanho);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                t.setIdTamanho(idtamanho);
+                t.setIdtamanho(idtamanho);
                 t.setNome(rs.getString("nome"));
             }
         } catch (Exception e) {
@@ -53,15 +53,15 @@ public class TamanhoDAO {
     public boolean gravar (Tamanho t){
         try {
             String sql;
-            if (t.getIdTamanho() == 0) {
+            if (t.getIdtamanho() == 0) {
                 sql = "INSERT INTO tamanho (nome) VALUES (?)";
             } else {
                 sql = "UPDATE tamanho SET nome=? WHERE idtamanho=?";
             }
             PreparedStatement ps = conexao.prepareStatement(sql);
             ps.setString(1, t.getNome());
-            if (t.getIdTamanho() > 0) {
-                ps.setInt(2, t.getIdTamanho());
+            if (t.getIdtamanho() > 0) {
+                ps.setInt(2, t.getIdtamanho());
             }
             ps.execute();
             return true;

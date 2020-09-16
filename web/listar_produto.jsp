@@ -1,5 +1,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html lang="pt-br">
     <head>
@@ -22,37 +23,41 @@
                         <thead class="table-info">
                             <tr>
                                 <th scope="col">Id</th>
-                                <th scope="col">Nome</th>
+                                <th scope="col">Descrição</th>
                                 <th scope="col">Valor Compra</th>
                                 <th scope="col">Valor Venda</th>
-                                <th scope="col">Estoque</th>
+                                <th scope="col">Quantidade</th>
                                 <th scope="col">Opções</th>
                             </tr>
                         </thead>
                         <tfoot class="table-info">
                             <tr>
                                 <th scope="col">Id</th>
-                                <th scope="col">Nome</th>
+                                <th scope="col">Descrição</th>
                                 <th scope="col">Valor Compra</th>
                                 <th scope="col">Valor Venda</th>
-                                <th scope="col">Estoque</th>
+                                <th scope="col">Quantidade</th>
                                 <th scope="col">Opções</th>
                             </tr>
                         </tfoot>
-                        <jsp:useBean id="pDAO" class="persistencia.ProdutoDAO"/>
+                        <jsp:useBean id="prDAO" class="persistencia.ProdutoDAO"/>
                         <tbody>
-                            <c:forEach var="p" items="${pDAO.lista}">
+                            <c:forEach var="pr" items="${prDAO.lista}">
                                 <tr>
-                                    <td>${p.idproduto}</td>
-                                    <td>${p.nome}</td>
-                                    <td>${p.vlr_compra}</td>
-                                    <td>${p.vlr_venda}</td>
-                                    <td>${p.estoque}</td>
+                                    <td>${pr.idproduto}</td>
+                                    <td>${pr.descricao}</td>
                                     <td>
-                                        <a href="./gerenciar_produto.do?acao=alterar&idproduto=${p.idproduto}" class="btn btn-info">
+                                        R$ <fmt:formatNumber pattern="#,##0.00" value="${pr.vlr_compra}"></fmt:formatNumber>
+                                    </td>
+                                    <td>
+                                        R$ <fmt:formatNumber pattern="#,##0.00" value="${pr.vlr_venda}"></fmt:formatNumber>                                 
+                                    </td>
+                                    <td>${pr.qtde}</td>
+                                    <td>
+                                        <a href="./gerenciar_produto.do?acao=alterar&idproduto=${pr.idproduto}" class="btn btn-info">
                                             <ion-icon name="pencil-sharp"></ion-icon>
                                         </a>
-                                        <button class="btn btn-danger" onclick="confirmarExclusao(${p.idproduto}, '${p.nome}')">
+                                        <button class="btn btn-danger" onclick="confirmarExclusao(${pr.idproduto}, '${pr.descricao}')">
                                             <ion-icon name="trash-sharp"></ion-icon>
                                         </button>
                                     </td>
@@ -94,8 +99,8 @@
             })
         </script>
         <script>
-            function confirmarExclusao(idproduto, nome){
-                if(confirm('Deseja realmente Desativar o produto '+nome+'?')){
+            function confirmarExclusao(idproduto, descricao){
+                if(confirm('Deseja realmente excluir o produto '+descricao+'?')){
                     location.href='gerenciar_produto.do?acao=excluir&idproduto='+idproduto;
                 }
             }

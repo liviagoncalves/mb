@@ -37,16 +37,15 @@
                         <tbody>
                             <c:forEach var="m" items="${mDAO.lista}">
                                 <tr>
-                                    <td>${m.idMarca}</td>
+                                    <td>${m.idmarca}</td>
                                     <td>${m.nome}</td>
                                     <td>
-                                        <a href="./gerenciar_marca.do?acao=alterar&idmarca=${m.idMarca}" class="btn btn-info">
+                                        <a href="./gerenciar_marca.do?acao=alterar&idmarca=${m.idmarca}" class="btn btn-info">
                                             <ion-icon name="pencil-sharp"></ion-icon>
                                         </a>
-                                        <a href="javascript:confirmarExclusao(${m.idMarca});">
-                                            <button class="btn btn-danger">
-                                                <ion-icon name="trash-sharp"></ion-icon>
-                                            </button>
+                                        <button class="btn btn-danger" onclick="confirmarExclusao(${m.idmarca},'${m.nome}')">
+                                            <ion-icon name="trash-sharp"></ion-icon>
+                                        </button>
                                         </a>
                                     </td>
                                 </tr>
@@ -59,6 +58,7 @@
         <script type="text/javascript" src="datatables/jquery.js"></script>
         <script type="text/javascript" src="datatables/jquery.dataTables.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+        <script src="bootstrap/js/bootstrap.min.js"></script>
         <script src="https://unpkg.com/ionicons@5.0.0/dist/ionicons.js"></script>
         <script src="https://unpkg.com/scrollreveal"></script>
         <script type="text/javascript">
@@ -86,9 +86,9 @@
             })
         </script>
         <script>
-            function confirmarExclusao(idMarca){
-                if (confirm('Deseja realmente excluir este Marca?')) {
-                    location.href="./gerenciar_marca.do?acao=excluir&idmarca="+idMarca;
+            function confirmarExclusao(idmarca, nome){
+                if (confirm('Deseja realmente excluir este Marca '+nome+'?')) {
+                    location.href="./gerenciar_marca.do?acao=excluir&idmarca="+idmarca;
                 }
             }
         </script>

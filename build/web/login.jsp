@@ -10,13 +10,22 @@
         <link rel="stylesheet" href="datatables/jquery.dataTables.min.css"/>
     </head>
     <body class="text-center">
-        <form action="" class="form-signin">
+        <%
+            String mensagem = (String)request.getSession().getAttribute("mensagem");
+            if (mensagem !=null) {
+                    request.getSession().removeAttribute("mensagem");
+        %>
+        <div class="alert alert-info"><%=mensagem%></div>
+        <%
+            }
+        %>
+        <form action="gerenciar_login.do" method="POST" class="form-signin">
             <img class="mb-4" src="imagem/Logo_flor.png" alt="" width="150" height="150">
             <h1 class="h3 mb-3 font-weight-normal">Acesso Restrito</h1>
-            <label for="Email" class="sr-only">Login</label>
-            <input type="email" id="Email" class="form-control" placeholder="Login" required autofocus>
+            <label for="login" class="sr-only">Login</label>
+            <input type="text" id="login" name="login" class="form-control" placeholder="Login" required="" autofocus>
             <label for="senha" class="sr-only">Senha</label>
-            <input type="password" id="inputPassword" class="form-control" placeholder="Senha" required>
+            <input type="password" id="senha" name="senha" class="form-control" placeholder="Senha" required="">
             <button class="btn btn-lg btn-info btn-block" type="submit">Entrar</button>
         </form>
         <script type="text/javascript" src="datatables/jquery.js"></script>

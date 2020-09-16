@@ -25,7 +25,7 @@ public class CategoriaDAO {
             ResultSet rs = stmt.executeQuery("select * from categoria");
             while (rs.next()){
                 Categoria c = new Categoria();
-                c.setIdCategoria(rs.getInt("idcategoria"));
+                c.setIdcategoria(rs.getInt("idcategoria"));
                 c.setNome(rs.getString("nome"));
                 resultado.add(c);
             }
@@ -34,7 +34,7 @@ public class CategoriaDAO {
         }
         return resultado;
     }
-    public Categoria getCategoriaPorIdCategoria(int idcategoria){
+    public Categoria getCategoriaPorIdcategoria(int idcategoria){
         Categoria c = new Categoria();
         try {
             String sql = "SELECT * FROM categoria WHERE idcategoria=?";
@@ -42,7 +42,7 @@ public class CategoriaDAO {
             ps.setInt(1, idcategoria);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                c.setIdCategoria(idcategoria);
+                c.setIdcategoria(idcategoria);
                 c.setNome(rs.getString("nome"));
             }
         } catch (SQLException e) {
@@ -53,15 +53,15 @@ public class CategoriaDAO {
     public boolean gravar (Categoria c){
         try {
             String sql;
-            if (c.getIdCategoria() == 0) {
+            if (c.getIdcategoria() == 0) {
                 sql = "INSERT INTO categoria (nome) VALUES (?)";
             } else {
                 sql = "UPDATE categoria SET nome=? WHERE idcategoria=?";
             }
             PreparedStatement ps =conexao.prepareStatement(sql);
             ps.setString(1, c.getNome());
-            if (c.getIdCategoria() > 0) {
-                ps.setInt(2, c.getIdCategoria());
+            if (c.getIdcategoria() > 0) {
+                ps.setInt(2, c.getIdcategoria());
             }
             ps.execute();
             return true;
